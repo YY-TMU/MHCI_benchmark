@@ -73,7 +73,7 @@
 ###########################################################
 
 ################################# single peptide - multi tools
-    for(num in 1:3){
+    for(num in 1:6){
         # load data
         data<-draw[[num]][,c("hlatype","antigen_peptide","fn_contribute","variance")]
         data <- data[order(-data$fn_contribute, -data$variance), ]
@@ -119,9 +119,8 @@
                 row_names_gp = gpar(fontsize = 7),
                 cluster_rows = FALSE,
                 cluster_columns = FALSE,
-                show_heatmap_legend = FALSE)    
-            # 此处必须先打印ht ！！！不能将ht 存储在列表里后续再打印。因为ht中cell_fun只是记录了状态与函数，并没有记录下数值和内容。当展示的时候才会在环境变量中查找input变量，将值赋予过去。如此一来input在不断更新，所有的热图的值都是同一套，直接就GG了。我也试过将不同input纳入列表，同时将cell_fun更改目标对象为特定input，无效。
-            # 创建新页面或在当前页面添加热图
+                show_heatmap_legend = TRUE)    
+          
             if (layout_counter == 1) {
             # 创建新页面
             grid.newpage()
@@ -172,7 +171,7 @@
     #draw heatmap
     order <- c("netmhcpan_el","netmhcpan_ba","mhcflurry_ps","mhcflurry_ba","capsnetmhc_an","bigmhc","stmhcpan","transphla")
     # 打开一个 PDF 文件设备，准备将所有热图保存到一个文件中
-    pdf(paste0(path_attention,"attention_of_all_",Mode,".pdf"), width = 6, height = 3)
+    pdf(paste0(path_attention,"attention_of_all_",Mode,".pdf"), width = 8, height = 3)
     # 定义每页的布局：三列两行
     page_layout <- grid.layout(nrow = 2, ncol = 3, heights = unit(rep(1, 2), "null"), widths = unit(rep(1, 3), "null"))
     # 初始化页面计数器和布局位置计数器
@@ -202,7 +201,7 @@
             row_names_gp = gpar(fontsize = 7),
             cluster_rows = FALSE,
             cluster_columns = FALSE,
-            show_heatmap_legend = FALSE)
+            show_heatmap_legend = TRUE)
         # 计算当前热图的行和列位置
         row_pos <- ceiling(layout_counter / 3) # 计算当前行位置
         col_pos <- layout_counter %% 3         # 计算当前列位置
@@ -239,7 +238,7 @@
     #draw heatmap
     order <- c("netmhcpan_el","netmhcpan_ba","mhcflurry_ps","mhcflurry_ba","capsnetmhc_an","bigmhc","stmhcpan","transphla")
     # 打开一个 PDF 文件设备，准备将所有热图保存到一个文件中
-    pdf(paste0(path_attention,"attention_of_selected_peptides.pdf"), width = 6, height = 3)
+    pdf(paste0(path_attention,"attention_of_selected_peptides.pdf"), width = 8, height = 3)
     # 定义每页的布局：三列两行
     page_layout <- grid.layout(nrow = 2, ncol = 3, heights = unit(rep(1, 2), "null"), widths = unit(rep(1, 3), "null"))
     # 初始化页面计数器和布局位置计数器
@@ -272,7 +271,7 @@
                 row_names_gp = gpar(fontsize = 7),
                 cluster_rows = FALSE,
                 cluster_columns = FALSE,
-                show_heatmap_legend = FALSE)
+                show_heatmap_legend = TRUE)
             # 计算当前热图的行和列位置
             row_pos <- ceiling(layout_counter / 3) # 计算当前行位置
             col_pos <- layout_counter %% 3         # 计算当前列位置

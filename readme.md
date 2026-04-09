@@ -7,9 +7,9 @@ This repository contains the code and final results for the research project. Th
 ## Code File Descriptions
 
 ### Part 1: Building the Validation Dataset
-1. **`dataset_extraction.r`**: Extracts and merges peptide-HLA-I positive binding data from various databases, removing training data used by MHC-peptide prediction tools.
-2. **`dataset_expandation.r`**: Processes protein data downloaded from the UniProtKB database to construct peptide-HLA-I negative binding data in a 1:1 ratio, then merges it with the positive data.
-3. **`dataset_visualization.r`**: Visualizes the validation dataset.
+1. **`01.dataset_extraction.r`**: Extracts and merges peptide-HLA-I positive binding data from various databases, removing training data used by MHC-peptide prediction tools.
+2. **`02.dataset_expandation.r`**: Processes protein data downloaded from the UniProtKB database to construct peptide-HLA-I negative binding data in a 1:1 ratio, then merges it with the positive data.
+3. **`03.dataset_visualization.r`**: Visualizes the validation dataset.
 
 ---
 
@@ -54,7 +54,4 @@ This repository contains the code and final results for the research project. Th
 2. Download the required software and datasets as specified in the paper.
 3. Follow the instructions in each script to reproduce the results.
 
----
 
-## Citation
-If you use this code or data, please cite the original paper: [insert citation here].

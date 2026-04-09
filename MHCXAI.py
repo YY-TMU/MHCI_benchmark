@@ -1,7 +1,7 @@
 #in shaplime, we install SHAP==0.41.0 Lime==0.2.0.1 Scikit_learn==1.3.2 Numpy==1.24.3 
 #reference:https://static-content.springer.com/esm/art%3A10.1038%2Fs42003-024-05968-2/MediaObjects/42003_2024_5968_MOESM4_ESM.pdf
 import numpy as np
-np.int = int  # 临时修复 NumPy 的弃用问题,不然shap可用不了
+np.int = int  
 import pandas as pd
 import lime
 import lime.lime_tabular
@@ -85,8 +85,8 @@ class MHCXAI:
             for p in peptides_arr:
                 f.write(p+"\n")
             f.close()    
-        allele = self.alleles.replace("*", "")  # 去掉 * 的等位基因字符串，符合netmhcpan的输入
-        len_pep = str(len(peptides_arr[0])) # 固定一下长度
+        allele = self.alleles.replace("*", "")  
+        len_pep = str(len(peptides_arr[0])) 
         output_f = self.dest+self.peptide+"_NetMHCpan_out_"+self.xai+".xls"
         command = ["/data1/wuguojia/data/mhc_benchmark/tools/mhc_i/method/netmhcpan-4.1-executable/netmhcpan_4_1_executable/netMHCpan","-p", input_f,"-xls","-a", allele,'-xlsfile', output_f,"-BA","-l",len_pep,"-tdir",self.dest+"/netMHCpanXXXXXX"]
         result = subprocess.run(command,stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
@@ -120,13 +120,13 @@ class MHCXAI:
             for i, peptide in enumerate(peptides_arr):
                 fasta_file.write(f'>peptide_{i + 1}\n')  # title
                 fasta_file.write(peptide)  # sequence
-                if i < len(peptides_arr) - 1:  # 如果不是最后一行，则换行
+                if i < len(peptides_arr) - 1: 
                     fasta_file.write('\n')
         with open('hlas.fasta', 'w') as fasta_file:
             for i in range(len(peptides_arr)):
                 fasta_file.write(f'>{hla_seq[0]}\n')  # title
                 fasta_file.write(hla_seq[0])  # sequence
-                if i < len(peptides_arr) - 1:  # 如果不是最后一行，则换行
+                if i < len(peptides_arr) - 1:  
                     fasta_file.write('\n')
         #run pHLAIformer code
         command = [
@@ -188,7 +188,7 @@ class MHCXAI:
             'allele': allele,
             'peptide': peptide,
             'label': label,
-            'length': [length] * len(peptides_arr)  # 长度列
+            'length': [length] * len(peptides_arr) 
         })
         df.to_csv('/data1/wuguojia/data/mhc_benchmark/attentionbase/result/stmhcpan_dump/input_file.csv', index=False)
         #run pHLAIformer code
@@ -211,7 +211,7 @@ class MHCXAI:
             print('ERROR: '+self.xai+' is not valid')
 #bigmhc_el done! use shaplime_big conda env
     #should goto /data1/wuguojia/data/mhc_benchmark/tools/bigmhc/src/ path to run the code
-    #should set /data1/wuguojia/data/mhc_benchmark/tools/bigmhc/src/predict.py #torch.set_num_threads(10)# 设置线程数，例如限制为 10 个线程 #torch.set_num_interop_threads(10)  # 控制并行任务间线程数 to avoid mistake, otherwise bigmhc could use over 80 cpu cores and will shut down quickly.
+    #should set /data1/wuguojia/data/mhc_benchmark/tools/bigmhc/src/predict.py #torch.set_num_threads(10)#torch.set_num_interop_threads(10)  to avoid mistake, otherwise bigmhc could use over 80 cpu cores and will shut down quickly.
     def bigmhc_predict_class(self,peptides_arr):
         #load input info
         peptide = [self.num_to_AA(instance) for instance in peptides_arr]
@@ -260,7 +260,7 @@ class MHCXAI:
             'HLA': allele,
             'peptide': peptide,
             'Label': label,
-            'length': [length] * len(peptides_arr)  # 长度列
+            'length': [length] * len(peptides_arr)  
         })
         df.to_csv('/data1/wuguojia/data/mhc_benchmark/tools/CapsNet-MHC/dataset/Anthem_dataset/test_data.txt', sep='\t',index=False)
         #run pHLAIformer code
@@ -283,7 +283,7 @@ class MHCXAI:
         else:
             print('ERROR: '+self.xai+' is not valid')
 
-#num_samples=25000有点多了，根据https://static-content.springer.com/esm/art%3A10.1038%2Fs42003-024-05968-2/MediaObjects/42003_2024_5968_MOESM1_ESM.pdf做出的指导，SHAP在10000，LIME在7500就可以了。
+
     def LIMEtabular(self,peptide,alleles,train_file,predictor,dest,mode=None,num_samples=7500):
         self.peptide = peptide
         self.peptide_size = len(peptide)
@@ -403,10 +403,10 @@ if xai=="LIME":
     lime_arr = np.zeros(col_num)
     lime_arr[0] = exp.intercept[1] # Intercept
     for i in range(0,len(peptide)):  # Weights
-        # idx = exp.as_list()[i][0][3] #这个人代码写的稀碎。举个例子：idx = exp.as_list()[0][0]结果为Pos10=Y，他只取第三个字符，那便是1，他妈的和Pos1重合了。怪不得老子怎么算都算不对，10以后都一个样，全是空的数据。让我帮他改改。
-        import re #正则表达式
-        idx_match = re.search(r'\d+', exp.as_list()[i][0])  # 匹配数字
-        idx = idx_match.group()  # 提取出匹配到的数字
+        # idx = exp.as_list()[i][0][3] # idx = exp.as_list()[0][0]
+        import re #
+        idx_match = re.search(r'\d+', exp.as_list()[i][0])  # 
+        idx = idx_match.group()  # 
         lime_arr[int(idx)] = exp.as_list()[i][1] 
     lime_arr[-2] = exp.score # R^2
     lime_arr[-1] = exp.local_pred # LIME model prediction
